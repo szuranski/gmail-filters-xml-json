@@ -1,55 +1,4 @@
 <?php
-	
-/**
- * Export Gmail filters XML file to JSON and text file. 
- * 
- */
-
-$doc = export([
-	'src_xml' => 'mailFilters.xml',
-	'save_json' => true
-]);
-
-text_export([
-	'doc' => $doc,		
-	'each_value' => function($name, $value) {
-		return sprintf( "%s: %s\n", $name, $value );
-	},
-	'each_property' => function($name, $value) {
-		return sprintf( "%s: %s\n", $name, $value );
-	}
-]);
-
-text_export([
-	'doc' => $doc,
-	'filename' => 'gmail_filters_csv.txt',
-	'each_value' => function($name, $value) {
-		return sprintf( "%s\t", $value );
-	},
-	'each_property' => function($name, $value) {
-		return sprintf( "%s\t", $value );
-	},
-	'after_each_entry' => function($entry) {
-		return PHP_EOL;
-	}
-]);
-
-text_export([
-	'doc' => $doc,
-	'filename' => 'gmail_filters_custom.txt',
-	'each_value' => function($name, $value) {
-		return sprintf( "%s: %s\n", $name, $value );
-	},
-	'each_property' => function($name, $value) {
-		return sprintf( "%s: %s\n", $name, $value );
-	},
-	'before_each_entry' => function($entry) {
-		return "-------- {$entry->id} ---\n";
-	},
-	'after_each_entry' => function($entry) {
-		return "---\n\n";
-	}
-]);
 
 /**
  * Export XML file to JSON.
@@ -136,10 +85,10 @@ function text_export($config) {
 		foreach ($entry as $entry_key => $entry_value) {
 			if( $entry_key === 'properties' ) {
 				foreach( $entry_value as $name => $value ) {
-					$output .= $each_property( $name, $value );
+					$output .= (string)$each_property( $name, $value );
 				}
 			}else{
-				$output .= $each_value( $entry_key, $entry_value );
+				$output .= (string)$each_value( $entry_key, $entry_value );
 			}
 		}
 		$output .= ( $after_each_entry ? $after_each_entry( $entry ) : PHP_EOL );
