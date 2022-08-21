@@ -1,7 +1,7 @@
 <?php
 	
 /**
- * Export Gmail filters XML file to JSON and text file.
+ * Export Gmail filters XML file to JSON and text file. 
  * 
  */
 
